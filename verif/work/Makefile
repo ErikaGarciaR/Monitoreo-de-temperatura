@@ -1,11 +1,11 @@
-src=
+src=monitoreo_top
 testname =test
 logs     = ./logs
 verbosity=UVM_MEDIUM
 .DEFAULT_GOAL := help
 list:
 	echo # rtl >list.f
-	IF EXIST ../rtl/${src}_rtl.sv echo ../rtl\${src}_rtl.sv >> list.f
+	IF EXIST ../rtl/${src}_top.sv echo ../rtl\${src}_top.sv >> list.f
 	echo # verification >> list.f
 	echo ../verif/${src}.sv >>list.f
 ana:

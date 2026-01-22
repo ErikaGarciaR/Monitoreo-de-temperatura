@@ -14,7 +14,7 @@ module estado_temp(
     // Parámetros de temperatura escalada
     parameter TEMP_FRIO = 180; //la temperatura como limite maximo para frio
     parameter TEMP_ALTO = 250; //la temperatura como limite maximo para alto
-    parameter N = 5;           // ciclos de persistencia para activar alerta
+    parameter N = 5;           //ciclos de persistencia para activar alerta
 
     // estado para FSM
     typedef enum logic [1:0] {NORMAL=2'b00, FRIO=2'b01, ALTO=2'b10, ALERTA=2'b11} estado_temp;

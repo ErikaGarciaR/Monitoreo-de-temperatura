@@ -1,23 +1,27 @@
 `timescale 1ns / 1ps
 
-
-
 module monitoreo_top(
     input  logic clk,                        // Reloj del sistema
     input  logic arst_n,                     // Reset asíncrono (activo en bajo)
-    input  logic signed [10:0] temp_entrada, // Temperatura cruda del sensor
-    output logic alerta,                     // Indicador general de falla
-    output logic calefactor,                 // Señal  para frío
-    output logic ventilador,                 // Señal para calor
-    output logic estado_actual               // Monitoreo del estado
+    input  logic signed [10:0] temp_entrada, // Temperatura  del sensor
+    output logic alerta,                     // Indica falla
+    output logic calefactor,                 // Señal para activar el calefactor 
+    output logic ventilador,                 // Señal para activar el ventilador
+    output logic estado_actual               // Estado del monitoreo
     
  );
-    logic signed [10:0] temp_registrada_int;
-    logic [2:0]         contador_int;
-    logic               fuera_rango_int;
+    logic signed [10:0] temp_registrada_int;  // Variables internas
+    logic [2:0]         contador_int;         // contador interno
+    logic               fuera_rango_int;      // variable que almacena 1 o 0 si se da la condicion de fuera de rango
 
+    // Se instancia los modulos 
+   // Compara la temperatura registrada contra los límites
+    comparador_temp compara1 (
+        .temp_reg            (temp_registrada_int),
+        .fuera_rango         (fuera_rango_int)
+    );
 
-    // Almacena la temperatura y gestiona el contador de persistencia
+    // Almacena la temperatura y el contador de persistencia
     registro_temp registra1(
         .clk                 (clk),
         .arst_n              (arst_n),
@@ -28,14 +32,9 @@ module monitoreo_top(
     );
 
 
-    // Compara la temperatura registrada contra los límites
-    comparador_temp compara1 (
-        .temp_reg            (temp_registrada_int),
-        .fuera_rango         (fuera_rango_int)
-    );
 
 
-    // Decide el estado y activa los actuadores si persiste el error
+    // Decide el estado y activa los actuadores si persiste mas 5 ciclos de reloj el rango de temperatura 
     estado_temp fsm1 (
         .clk                 (clk),
         .arst_n              (arst_n),

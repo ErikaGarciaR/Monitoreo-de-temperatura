@@ -1,7 +1,8 @@
 # ============================ rtl
-  ../../rtl/modulo_top.sv
-  ../../rtl/modulo_ss.sv
-  ../../rtl/modulo_sss.sv
+  ../rtl/monitoreo_top.sv
+  ../rtl/estado_temp.sv
+  ../rtl/comparador_temp.sv
+  ../rtl/registro_temp.sv
   
 # =========================== tb
-  ../verif/modulo_tb.sv
+  ../verif/monitoreo_tb.sv
