@@ -54,6 +54,9 @@ module estado_temp(
                     end
                     if (temp_registrado >= TEMP_BAJO && temp_registrado <= TEMP_ALTO)  // retorno a estado normal
                         estado <= NORMAL;
+                        alerta <= 0;  // También resetear alerta
+                        calefactor <= 0;
+                        ventilador <= 0;                   
                 end
                 default: begin      // estado por defecto
                     estado<=NORMAL;

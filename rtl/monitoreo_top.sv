@@ -17,7 +17,7 @@ module monitoreo_top(
     // Se instancia los modulos 
    // Compara la temperatura registrada contra los límites
     comparador_temp compara1 (
-        .temp_reg            (temp_registrada_int),
+        .temp_entrada        (temp_entrada),
         .fuera_rango         (fuera_rango_int)
     );
 
