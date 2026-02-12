@@ -1,4 +1,4 @@
-`include "property_defines.svh"
+//`include "property_defines.svh"
 
 module aserciones_monitoreo(interface_monitoreo intf);
     logic clk;

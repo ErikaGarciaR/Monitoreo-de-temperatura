@@ -1,5 +1,5 @@
 
-../property_defines.svh
+../../fv/property_defines.svh
 # ============================ rtl
   ../../rtl/monitoreo_top.sv
   ../../rtl/estado_temp.sv
