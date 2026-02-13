@@ -23,13 +23,11 @@ module estado_temp(
     always_ff @(posedge clk, negedge arst_n) begin
         if (!arst_n) begin
             estado <= NORMAL;    // Para iniciar en la maquina de estado
-            alerta <= 0;         // se inicia alerta en bajo
             calefactor <= 0;     // calefactor en bajo
             ventilador <= 0;     // ventilador en bajo
         end else begin
             case (estado)
                 NORMAL: begin
-                    alerta <= 0;
                     calefactor <= 0;     // calefactor en bajo
                     ventilador <= 0;     // ventilador en bajo
                     if (temp_registrado < TEMP_BAJO) estado <= BAJO;
@@ -37,14 +35,22 @@ module estado_temp(
                 end
                 BAJO: begin
                     if (temp_registrado >= TEMP_BAJO && temp_registrado <= TEMP_ALTO) estado <= NORMAL;
-                    else if (contador_fuera_rango >= N) estado <= ALERTA;
+                    else if (contador_fuera_rango >= N) begin
+                        estado <= ALERTA;
+                        calefactor <= 1;                             // calefactor se enciende 
+                        ventilador <= 0;                             // ventilador apagao
+                    end
                 end
                 ALTO: begin
                     if (temp_registrado >= TEMP_BAJO && temp_registrado <= TEMP_ALTO) estado <= NORMAL;
-                    else if (contador_fuera_rango >= N) estado <= ALERTA;
+                    else if (contador_fuera_rango >= N) begin
+                        estado <= ALERTA;
+                        ventilador <= 1;                             // ventilador en alto
+                        calefactor <= 0;                             // calefactor en bajo
+
+                    end
                 end
                 ALERTA: begin
-                    alerta <= 1; // persiste hasta que se normalice 
                     if (temp_registrado < TEMP_BAJO) begin           // temperatura registrada en bajo
                         calefactor <= 1;                             // calefactor se enciende 
                         ventilador <= 0;                             // ventilador apagao
@@ -52,20 +58,19 @@ module estado_temp(
                         ventilador <= 1;                             // ventilador en alto
                         calefactor <= 0;                             // calefactor en bajo
                     end
-                    if (temp_registrado >= TEMP_BAJO && temp_registrado <= TEMP_ALTO)  // retorno a estado normal
+                    if (temp_registrado >= TEMP_BAJO && temp_registrado <= TEMP_ALTO) begin // retorno a estado normal
                         estado <= NORMAL;
-                        alerta <= 0;  // También resetear alerta
                         calefactor <= 0;
-                        ventilador <= 0;                   
+                        ventilador <= 0;
+                    end                   
                 end
                 default: begin      // estado por defecto
                     estado<=NORMAL;
-                    alerta<=0;
                 end
             endcase
         end
     end
-
-    assign estado_actual = estado; // verificacion del estado actual
+    assign alerta = (estado == ALERTA); // verificacion del alarma
+    assign estado_actual = estado;      // verificacion del estado actual
 
 endmodule

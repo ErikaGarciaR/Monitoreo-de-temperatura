@@ -1,14 +1,14 @@
 
-../../fv/property_defines.svh
+  ../../fv/property_defines.svh
 # ============================ rtl
   ../../rtl/monitoreo_top.sv
   ../../rtl/estado_temp.sv
   ../../rtl/comparador_temp.sv
   ../../rtl/registro_temp.sv
 # ============================ verificación
-
-../aserciones_monitoreo.sv
-../monitoreo_pkg.sv
-../interface_monitoreo.sv
+  ../../fv/fv_monitoreo.sv
+  ../monitoreo_pkg.sv
+  ../interface_monitoreo.sv
+  ../cov_monitoreo.sv
 # =========================== tb
   ../monitoreo_tb.sv

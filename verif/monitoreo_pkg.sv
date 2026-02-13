@@ -53,4 +53,27 @@ package monitoreo_pkg;
 
     endclass
 
+    class temp_persistente extends temp_base;
+        // Guarda el valor anterior 
+        logic signed [10:0] ultimo_valor;
+        //margen de transicion 
+        int delta = 2;
+
+        constraint c_cercania { valor inside {[ultimo_valor - delta : ultimo_valor + delta]}; }
+
+        function new(logic signed [10:0] inicio = 250);
+            super.new();
+            this.ultimo_valor = inicio;
+            this.valor = inicio;
+        endfunction
+
+        function void post_randomize();
+            this.ultimo_valor = this.valor;
+        endfunction
+
+        virtual function void reportar();
+            $display("[ESTADO: PERSISTENTE] registrando temperatura persistente: %0d.%0d C", valor/10, valor%10);
+        endfunction
+    endclass
+
 endpackage : monitoreo_pkg
